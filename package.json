@@ -1,0 +1,26 @@
+{
+  "name": "logparser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suhailgupta03/Near-Real-Time-Threat-Detection.git"
+  },
+  "author": "Suhail",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suhailgupta03/Near-Real-Time-Threat-Detection/issues"
+  },
+  "homepage": "https://github.com/suhailgupta03/Near-Real-Time-Threat-Detection#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "express": "^4.15.2",
+    "express-fileupload": "^0.1.2",
+    "geoip-lite": "^1.2.0",
+    "pug": "^2.0.0-beta11"
+  }
+}
