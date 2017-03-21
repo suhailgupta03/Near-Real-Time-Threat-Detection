@@ -25,7 +25,7 @@ app.post('/upload', (req, resp) => {
     } else {
         // File has been received
         let fileName = req.files.fupload.name;
-        let locationToUpload = `D:/${fileName}`;
+        let locationToUpload = `/home/suhail/temp/${fileName}`;
         req.files.fupload.mv(locationToUpload, (err) => {
             if (err)
                 return resp.status(500).send(err);
@@ -33,20 +33,16 @@ app.post('/upload', (req, resp) => {
                 Promise.coroutine(function* () {
                     try {
                         let lineReader = yield Parser.parse(locationToUpload);
+                        let promises = [];
                         lineReader.on('line', (line) => {
-                            console.log(line + '---');
-                            Parser.detectAttack(line).then((attackInfo) => {
-                                if (attackInfo.status) {
-                                    // Attack detected!
-                                    resp.write(`Yes, ${line} \n`);
-                                }
-                            }).catch((err) => {
-
-                            });
+                            promises.push(Parser.detectAttack(line));
                         });
 
                         lineReader.on('close', () => {
-                            resp.end();
+                            console.log(promises.map(p => p.catch(e => e)));
+                            Promise.all(promises.map(p => p.catch(e => e)))
+                                .then(result => console.log(`Yes, ${line}`))
+                                .catch(e => console.log(e));
                         });
                     } catch (err) {
                         resp.json(err);
