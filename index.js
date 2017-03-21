@@ -1,4 +1,4 @@
-'use strcit';
+'use strict';
 var express = require('express');
 var app = express();
 var fileUpload = require('express-fileupload');
@@ -25,7 +25,7 @@ app.post('/upload', (req, resp) => {
     } else {
         // File has been received
         let fileName = req.files.fupload.name;
-        let locationToUpload = `/home/suhail/temp/${fileName}`;
+        let locationToUpload = `D:/${fileName}`;
         req.files.fupload.mv(locationToUpload, (err) => {
             if (err)
                 return resp.status(500).send(err);
@@ -39,15 +39,19 @@ app.post('/upload', (req, resp) => {
                         });
 
                         lineReader.on('close', () => {
-                            console.log(promises.map(p => p.catch(e => e)));
-                            Promise.all(promises.map(p => p.catch(e => e)))
-                                .then(result => console.log(`Yes, ${line}`))
-                                .catch(e => console.log(e));
+                            Promise.all(promises.map(p => p.catch(e => e))).then((result) => {
+                                let statement = [];
+                                result.filter((r) => {
+                                    if(true === r.status) {
+                                        resp.write(r.statement);
+                                    }
+                                });
+                                resp.end();                                
+                            }).catch(e => console.log(e));
                         });
                     } catch (err) {
                         resp.json(err);
                     }
-
                 })();
             }
         });
