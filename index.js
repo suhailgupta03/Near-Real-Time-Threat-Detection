@@ -5,6 +5,7 @@ var fileUpload = require('express-fileupload');
 var fs = require('fs')
 const Parser = require('./lib/parser');
 var Promise = require('bluebird');
+require('dotenv').config();
 
 app.set('views', 'views');
 app.set('view engine', 'pug');
@@ -25,7 +26,7 @@ app.post('/upload', (req, resp) => {
     } else {
         // File has been received
         let fileName = req.files.fupload.name;
-        let locationToUpload = `D:/${fileName}`;
+        let locationToUpload = `${process.env.PATH}:/${fileName}`;
         req.files.fupload.mv(locationToUpload, (err) => {
             if (err)
                 return resp.status(500).send(err);
